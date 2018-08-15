@@ -27,6 +27,10 @@ Sliders reflect the current state of the settings they control.
 
 {{"demo": "pages/lab/slider/StepSlider.js"}}
 
+## Slider with a label
+
+{{"demo": "pages/lab/slider/LabeledSlider.js"}}
+
 ## Disabled slider
 
 {{"demo": "pages/lab/slider/DisabledSlider.js"}}

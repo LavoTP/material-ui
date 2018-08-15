@@ -7,6 +7,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import clamp from '../utils/clamp';
+import SliderValueLabel from './SliderValueLabel';
 
 export const styles = theme => {
   const commonTransitionsOptions = {
@@ -381,8 +382,10 @@ class Slider extends React.Component {
       max,
       min,
       reverse,
+      showValueLabel,
       theme,
       value,
+      valueLabel,
       vertical,
       ...other
     } = this.props;
@@ -424,7 +427,7 @@ class Slider extends React.Component {
     const thumbProperty = vertical ? 'top' : 'left';
     const inlineTrackBeforeStyles = { [trackProperty]: this.calculateTrackBeforeStyles(percent) };
     const inlineTrackAfterStyles = { [trackProperty]: this.calculateTrackAfterStyles(percent) };
-    const inlineThumbStyles = { [thumbProperty]: `${percent}%` };
+    const inlineThumbPositionStyles = { [thumbProperty]: `${percent}%` };
 
     return (
       <Component
@@ -448,13 +451,21 @@ class Slider extends React.Component {
           <ButtonBase
             className={thumbClasses}
             disableRipple
-            style={inlineThumbStyles}
+            style={inlineThumbPositionStyles}
             onBlur={this.handleBlur}
             onKeyDown={this.handleKeyDown}
             onTouchStartCapture={this.handleTouchStart}
             onTouchMove={this.handleMouseMove}
             onFocusVisible={this.handleFocus}
           />
+          {showValueLabel && (
+            <SliderValueLabel
+              state={currentState}
+              style={inlineThumbPositionStyles}
+              value={value}
+              vertical={vertical}
+            />
+          )}
           <div className={trackAfterClasses} style={inlineTrackAfterStyles} />
         </div>
       </Component>
@@ -508,6 +519,11 @@ Slider.propTypes = {
    */
   reverse: PropTypes.bool,
   /**
+   * If `true`, a label with the current value is displayed next to the thumb
+   * when the slider is in a focused state.
+   */
+  showValueLabel: PropTypes.bool,
+  /**
    * The granularity the slider can step through values.
    */
   step: PropTypes.number,
@@ -519,6 +535,10 @@ Slider.propTypes = {
    * The value of the slider.
    */
   value: PropTypes.number.isRequired,
+  /**
+   * The component used for the value label
+   */
+  valueLabel: PropTypes.element,
   /**
    * If `true`, the slider will be vertical.
    */

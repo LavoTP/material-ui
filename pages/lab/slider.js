@@ -22,6 +22,13 @@ module.exports = require('fs')
   .readFileSync(require.resolve('docs/src/pages/lab/slider/StepSlider'), 'utf8')
 `,
         },
+        'pages/lab/slider/LabeledSlider.js': {
+          js: require('docs/src/pages/lab/slider/LabeledSlider').default,
+          raw: preval`
+module.exports = require('fs')
+  .readFileSync(require.resolve('docs/src/pages/lab/slider/LabeledSlider'), 'utf8')
+`,
+        },
         'pages/lab/slider/DisabledSlider.js': {
           js: require('docs/src/pages/lab/slider/DisabledSlider').default,
           raw: preval`
