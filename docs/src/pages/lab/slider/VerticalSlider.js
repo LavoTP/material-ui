@@ -27,6 +27,12 @@ class VerticalSlider extends React.Component {
       <div className={classes.root}>
         <Slider value={value} onChange={this.handleChange} vertical />
         <Slider value={value} onChange={this.handleChange} vertical reverse />
+        <Slider
+          step={10}
+          value={Math.round(value / 10) * 10}
+          onChange={this.handleChange}
+          vertical
+        />
       </div>
     );
   }

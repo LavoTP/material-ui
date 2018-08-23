@@ -17,6 +17,7 @@ function DisabledSlider(props) {
       <Slider value={0} disabled />
       <Slider value={50} disabled />
       <Slider value={100} disabled />
+      <Slider value={50} min={0} max={100} step={10} disabled />
     </div>
   );
 }

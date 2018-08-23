@@ -26,6 +26,9 @@ const styles = theme => {
   };
 
   return {
+    /**
+     * Styles applied to the root element
+     */
     root: {
       width: `${RADIUS * 2}px !important`,
       height: `${RADIUS * 2}px !important`,
@@ -40,8 +43,11 @@ const styles = theme => {
       '&$activated, &$jumped': {
         opacity: 1,
       },
+      '&$vertical': {
+        bottom: 0,
+        left: 15,
+      },
     },
-    activated: {},
     blendPath: {
       fill: colors.primary,
     },
@@ -49,7 +55,6 @@ const styles = theme => {
       bottom: 24,
       position: 'relative',
     },
-    jumped: {},
     text: {
       color: theme.palette.getContrastText(colors.primary),
       display: 'inline-flex',
@@ -60,10 +65,12 @@ const styles = theme => {
       paddingTop: 9,
       width: '100%',
     },
-    vertical: {
-      bottom: 0,
-      left: 15,
-    },
+    /* Class applied to the root element to trigger JSS nested styles if `activated`. */
+    activated: {},
+    /* Class applied to the root element to trigger JSS nested styles if `jumped`. */
+    jumped: {},
+    /* Class applied to the root element to trigger JSS nested styles if `vertical`. */
+    vertical: {},
   };
 };
 
@@ -82,6 +89,7 @@ class SliderValueLabel extends React.PureComponent {
 
     const className = classNames(classNameProp, classes.root, {
       [classes.activated]: state === 'activated',
+      [classes.disabled]: state === 'disabled',
       [classes.jumped]: state === 'jumped',
       [classes.vertical]: vertical,
     });
@@ -109,7 +117,8 @@ SliderValueLabel.propTypes = {
    */
   classes: PropTypes.object.isRequired,
   /**
-   * state of the corresponding slider
+   * @ignore
+   * controlled by the Slider
    */
   state: PropTypes.string,
   /**
@@ -117,9 +126,14 @@ SliderValueLabel.propTypes = {
    */
   theme: PropTypes.object.isRequired,
   /**
-   * The value of the slider
+   * @ignore
+   * controlled by the Slider
    */
   value: PropTypes.number.isRequired,
+  /**
+   * @ignore
+   * controlled by the Slider
+   */
   vertical: PropTypes.bool,
 };
 
