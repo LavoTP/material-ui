@@ -6,8 +6,8 @@ import classNames from 'classnames';
 import withStyles from '@material-ui/core/styles/withStyles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import { fade } from '@material-ui/core/styles/colorManipulator';
+import { isMuiElement } from '@material-ui/core/utils/reactHelpers';
 import clamp from '../utils/clamp';
-import SliderValueLabel from './SliderValueLabel';
 
 export const styles = theme => {
   const commonTransitionsOptions = {
@@ -105,8 +105,8 @@ export const styles = theme => {
         boxShadow: `0px 0px 0px 9px ${fade(colors.primary, 0.16)}`,
       },
       '&$activated': {
-        width: 17,
-        height: 17,
+        width: 16,
+        height: 16,
         transition: 'none',
       },
       '&$disabled': {
@@ -116,8 +116,8 @@ export const styles = theme => {
         backgroundColor: colors.disabled,
       },
       '&$jumped': {
-        width: 17,
-        height: 17,
+        width: 16,
+        height: 16,
       },
     },
     /* Class applied to the root element to trigger JSS nested styles if `reverse={true}` . */
@@ -376,6 +376,7 @@ class Slider extends React.Component {
     const { currentState } = this.state;
     const {
       component: Component,
+      children: childrenProp,
       classes,
       className: classNameProp,
       disabled,
@@ -390,7 +391,6 @@ class Slider extends React.Component {
       ...other
     } = this.props;
 
-    const isDiscrete = step > 0;
     const percent = clamp(((value - min) * 100) / (max - min));
 
     const commonClasses = {
@@ -430,6 +430,24 @@ class Slider extends React.Component {
     const inlineTrackAfterStyles = { [trackProperty]: this.calculateTrackAfterStyles(percent) };
     const inlineThumbPositionStyles = { [thumbProperty]: `${percent}%` };
 
+    const children = React.Children.map(childrenProp, child => {
+      if (!React.isValidElement(child)) {
+        return null;
+      }
+
+      if (isMuiElement(child, ['SliderValueLabel'])) {
+        return React.cloneElement(child, {
+          className: thumbClasses,
+          state: currentState,
+          style: inlineThumbPositionStyles,
+          value,
+          vertical,
+        });
+      }
+
+      return child;
+    });
+
     return (
       <Component
         role="slider"
@@ -459,14 +477,7 @@ class Slider extends React.Component {
             onTouchMove={this.handleMouseMove}
             onFocusVisible={this.handleFocus}
           />
-          {isDiscrete && (
-            <SliderValueLabel
-              state={currentState}
-              style={inlineThumbPositionStyles}
-              value={value}
-              vertical={vertical}
-            />
-          )}
+          {children}
           <div className={trackAfterClasses} style={inlineTrackAfterStyles} />
         </div>
       </Component>
@@ -475,6 +486,10 @@ class Slider extends React.Component {
 }
 
 Slider.propTypes = {
+  /**
+   * A SliderValueLabel if needed
+   */
+  children: PropTypes.node,
   /**
    * Override or extend the styles applied to the component.
    * See [CSS API](#css-api) below for more details.
