@@ -6,8 +6,8 @@ import classNames from 'classnames';
 import withStyles from '@material-ui/core/styles/withStyles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import { fade } from '@material-ui/core/styles/colorManipulator';
-import { isMuiElement } from '@material-ui/core/utils/reactHelpers';
 import clamp from '../utils/clamp';
+import SliderValueLabel from '../SliderValueLabel';
 
 export const styles = theme => {
   const commonTransitionsOptions = {
@@ -430,23 +430,7 @@ class Slider extends React.Component {
     const inlineTrackAfterStyles = { [trackProperty]: this.calculateTrackAfterStyles(percent) };
     const inlineThumbPositionStyles = { [thumbProperty]: `${percent}%` };
 
-    const children = React.Children.map(childrenProp, child => {
-      if (!React.isValidElement(child)) {
-        return null;
-      }
-
-      if (isMuiElement(child, ['SliderValueLabel'])) {
-        return React.cloneElement(child, {
-          className: thumbClasses,
-          state: currentState,
-          style: inlineThumbPositionStyles,
-          value,
-          vertical,
-        });
-      }
-
-      return child;
-    });
+    const isDiscrete = step > 0;
 
     return (
       <Component
@@ -477,7 +461,15 @@ class Slider extends React.Component {
             onTouchMove={this.handleMouseMove}
             onFocusVisible={this.handleFocus}
           />
-          {children}
+          {isDiscrete && (
+            <SliderValueLabel
+              className={thumbClasses}
+              state={currentState}
+              style={inlineThumbPositionStyles}
+              value={value}
+              vertical={vertical}
+            />
+          )}
           <div className={trackAfterClasses} style={inlineTrackAfterStyles} />
         </div>
       </Component>
@@ -535,7 +527,12 @@ Slider.propTypes = {
    */
   reverse: PropTypes.bool,
   /**
-   * The granularity the slider can step through values.
+   * props applied to the SliderValueLabel if displayed
+   */
+  SliderValueLabelProps: PropTypes.object,
+  /**
+   * The granularity the slider can step through values. If given a SliderValueLabel
+   * is displayed on activation
    */
   step: PropTypes.number,
   /**
