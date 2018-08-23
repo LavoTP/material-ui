@@ -45,7 +45,7 @@ const styles = theme => {
       },
       '&$vertical': {
         bottom: 0,
-        left: 15,
+        left: 43,
       },
     },
     blendPath: {
@@ -54,6 +54,11 @@ const styles = theme => {
     blendSvg: {
       bottom: 24,
       position: 'relative',
+      '&$vertical': {
+        bottom: 39,
+        right: 15,
+        transform: 'rotate(90deg)',
+      },
     },
     text: {
       color: theme.palette.getContrastText(colors.primary),
@@ -87,12 +92,16 @@ class SliderValueLabel extends React.PureComponent {
       ...rest
     } = this.props;
 
-    const className = classNames(classNameProp, classes.root, {
+    const commonClasses = classNames({
       [classes.activated]: state === 'activated',
       [classes.disabled]: state === 'disabled',
       [classes.jumped]: state === 'jumped',
       [classes.vertical]: vertical,
     });
+
+    const className = classNames(classNameProp, classes.root, commonClasses);
+
+    const blendClasses = classNames(commonClasses, classes.blendSvg);
 
     const labelClasses = classNames(classes.text);
 
@@ -100,10 +109,7 @@ class SliderValueLabel extends React.PureComponent {
       <>
         <div className={className} style={style} {...rest}>
           <span className={labelClasses}>{value}</span>
-          <Blend
-            className={classNames(classes.blendSvg)}
-            pathClassName={classNames(classes.blendPath)}
-          />
+          <Blend className={blendClasses} pathClassName={classNames(classes.blendPath)} />
         </div>
       </>
     );
