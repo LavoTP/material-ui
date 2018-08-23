@@ -382,7 +382,7 @@ class Slider extends React.Component {
       max,
       min,
       reverse,
-      showValueLabel,
+      step,
       theme,
       value,
       valueLabel,
@@ -390,6 +390,7 @@ class Slider extends React.Component {
       ...other
     } = this.props;
 
+    const isDiscrete = step > 0;
     const percent = clamp(((value - min) * 100) / (max - min));
 
     const commonClasses = {
@@ -458,7 +459,7 @@ class Slider extends React.Component {
             onTouchMove={this.handleMouseMove}
             onFocusVisible={this.handleFocus}
           />
-          {showValueLabel && (
+          {isDiscrete && (
             <SliderValueLabel
               state={currentState}
               style={inlineThumbPositionStyles}
@@ -518,11 +519,6 @@ Slider.propTypes = {
    * If `true`, the slider will be reversed.
    */
   reverse: PropTypes.bool,
-  /**
-   * If `true`, a label with the current value is displayed next to the thumb
-   * when the slider is in a focused state.
-   */
-  showValueLabel: PropTypes.bool,
   /**
    * The granularity the slider can step through values.
    */
