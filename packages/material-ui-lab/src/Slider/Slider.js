@@ -460,16 +460,15 @@ class Slider extends React.Component {
             onTouchStartCapture={this.handleTouchStart}
             onTouchMove={this.handleMouseMove}
             onFocusVisible={this.handleFocus}
-          />
-          {isDiscrete && (
-            <SliderValueLabel
-              className={thumbClasses}
-              state={currentState}
-              style={inlineThumbPositionStyles}
-              value={value}
-              vertical={vertical}
-            />
-          )}
+          >
+            {isDiscrete && (
+              <SliderValueLabel
+                state={currentState}
+                value={value}
+                vertical={vertical}
+              />
+            )}
+          </ButtonBase>
           <div className={trackAfterClasses} style={inlineTrackAfterStyles} />
         </div>
       </Component>

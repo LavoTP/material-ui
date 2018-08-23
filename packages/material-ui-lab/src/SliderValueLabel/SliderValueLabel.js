@@ -12,13 +12,6 @@ const styles = theme => {
     easing: theme.transitions.easing.easeOut,
   };
 
-  const commonTransitionsProperty = ['left', 'top'];
-
-  const commonTransitions = theme.transitions.create(
-    commonTransitionsProperty,
-    commonTransitionsOptions,
-  );
-
   const hideTransitiions = theme.transitions.create(['opacity'], commonTransitionsOptions);
 
   const colors = {
@@ -30,21 +23,18 @@ const styles = theme => {
      * Styles applied to the root element
      */
     root: {
-      width: `${RADIUS * 2}px !important`,
-      height: `${RADIUS * 2}px !important`,
-      backgroundColor: colors.primary,
-      borderRadius: '50%',
-      bottom: 7,
+      width: `${RADIUS * 2}px`,
+      height: `${RADIUS * 2}px`,
+      bottom: 28,
       opacity: 0,
       position: 'absolute',
-      transform: 'translate(-50%, -50%)',
-      transition: [commonTransitions, hideTransitiions].join(', '),
+      transition: hideTransitiions,
       '&$activated, &$jumped': {
         opacity: 1,
       },
       '&$vertical': {
-        bottom: 0,
-        left: 43,
+        left: 30,
+        top: -10,
       },
     },
     blendPath: {
@@ -101,7 +91,7 @@ class SliderValueLabel extends React.PureComponent {
       [classes.vertical]: vertical,
     });
 
-    const className = classNames(classNameProp, classes.root, commonClasses);
+    const className = classNames(classes.root, commonClasses, classNameProp);
 
     const blendClasses = classNames(commonClasses, classes.blendSvg);
 
