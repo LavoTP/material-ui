@@ -26,6 +26,13 @@ class ReverseSlider extends React.Component {
       <div className={classes.root}>
         <Slider value={value} onChange={this.handleChange} />
         <Slider value={value} onChange={this.handleChange} reverse />
+        <Slider value={Math.round(value / 10) * 10} step={10} onChange={this.handleChange} />
+        <Slider
+          value={Math.round(value / 10) * 10}
+          step={10}
+          onChange={this.handleChange}
+          reverse
+        />
       </div>
     );
   }
