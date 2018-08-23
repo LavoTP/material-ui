@@ -39,7 +39,6 @@ const styles = theme => {
       position: 'absolute',
       transform: 'translate(-50%, -50%)',
       transition: [commonTransitions, hideTransitiions].join(', '),
-      zIndex: 2,
       '&$activated, &$jumped': {
         opacity: 1,
       },
@@ -54,6 +53,7 @@ const styles = theme => {
     blendSvg: {
       bottom: 24,
       position: 'relative',
+      zIndex: 0,
       '&$vertical': {
         bottom: 39,
         right: 15,
@@ -68,7 +68,9 @@ const styles = theme => {
       fontSize: theme.typography.pxToRem(12),
       justifyContent: 'center',
       paddingTop: 9,
+      position: 'relative',
       width: '100%',
+      zIndex: 1,
     },
     /* Class applied to the root element to trigger JSS nested styles if `activated`. */
     activated: {},
