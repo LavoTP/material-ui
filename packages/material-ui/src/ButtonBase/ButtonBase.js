@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import keycode from 'keycode';
 import ownerWindow from '../utils/ownerWindow';
+import { setRef } from '../utils/reactHelpers';
 import withStyles from '../styles/withStyles';
 import NoSsr from '../NoSsr';
 import { listenForFocusKeys, detectFocusVisible } from './focusVisible';
@@ -61,6 +62,8 @@ if (process.env.NODE_ENV !== 'production' && !React.createContext) {
 class ButtonBase extends React.Component {
   state = {};
 
+  buttonRef = React.createRef();
+
   keyDown = false; // Used to help track keyboard activation keyDown
 
   focusVisibleCheckTime = 50;
@@ -96,14 +99,13 @@ class ButtonBase extends React.Component {
   });
 
   componentDidMount() {
-    this.button = ReactDOM.findDOMNode(this);
-    listenForFocusKeys(ownerWindow(this.button));
+    listenForFocusKeys(ownerWindow(this.getButtonNode()));
 
     if (this.props.action) {
       this.props.action({
         focusVisible: () => {
           this.setState({ focusVisible: true });
-          this.button.focus();
+          this.getButtonNode().focus();
         },
       });
     }
@@ -122,6 +124,10 @@ class ButtonBase extends React.Component {
 
   componentWillUnmount() {
     clearTimeout(this.focusVisibleTimeout);
+  }
+
+  getButtonNode() {
+    return ReactDOM.findDOMNode(this.buttonRef.current);
   }
 
   onRippleRef = node => {
@@ -176,13 +182,14 @@ class ButtonBase extends React.Component {
       onKeyDown(event);
     }
 
+    const button = this.getButtonNode();
     // Keyboard accessibility for non interactive elements
     if (
       event.target === event.currentTarget &&
       component &&
       component !== 'button' &&
       (key === 'space' || key === 'enter') &&
-      !(this.button.tagName === 'A' && this.button.href)
+      !(button.tagName === 'A' && button.href)
     ) {
       event.preventDefault();
       if (onClick) {
@@ -215,12 +222,12 @@ class ButtonBase extends React.Component {
     }
 
     // Fix for https://github.com/facebook/react/issues/7769
-    if (!this.button) {
-      this.button = event.currentTarget;
+    if (!this.buttonRef.current) {
+      this.buttonRef.current = event.currentTarget;
     }
 
     event.persist();
-    detectFocusVisible(this, this.button, () => {
+    detectFocusVisible(this, this.getButtonNode(), () => {
       this.onFocusVisibleHandler(event);
     });
 
@@ -232,7 +239,7 @@ class ButtonBase extends React.Component {
   render() {
     const {
       action,
-      buttonRef,
+      buttonRef: buttonRefProp,
       centerRipple,
       children,
       classes,
@@ -297,7 +304,10 @@ class ButtonBase extends React.Component {
         onTouchEnd={this.handleTouchEnd}
         onTouchMove={this.handleTouchMove}
         onTouchStart={this.handleTouchStart}
-        ref={buttonRef}
+        ref={ref => {
+          setRef(this.buttonRef, ref);
+          setRef(buttonRefProp, ref);
+        }}
         tabIndex={disabled ? '-1' : tabIndex}
         {...buttonProps}
         {...other}

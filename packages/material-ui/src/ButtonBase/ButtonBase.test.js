@@ -413,7 +413,7 @@ describe('<ButtonBase />', () => {
 
   describe('prop: component', () => {
     it('should allow to use a link component', () => {
-      const Link = props => <div {...props} />;
+      const Link = React.forwardRef((props, ref) => <div ref={ref} {...props} />);
       const wrapper = shallow(<ButtonBase component={Link}>Hello</ButtonBase>);
       assert.strictEqual(wrapper.is(Link), true);
     });
@@ -462,11 +462,11 @@ describe('<ButtonBase />', () => {
     });
 
     it('should work with a functionnal component', () => {
-      const MyLink = props => (
-        <a href="/foo" {...props}>
+      const MyLink = React.forwardRef((props, ref) => (
+        <a href="/foo" ref={ref} {...props}>
           bar
         </a>
-      );
+      ));
       const wrapper = mount(
         <ButtonBaseNaked theme={{}} classes={{}} component={MyLink}>
           Hello
@@ -673,7 +673,7 @@ describe('<ButtonBase />', () => {
       assert.strictEqual(typeof buttonActions.focusVisible, 'function');
       buttonActions.focusVisible();
       wrapper.update();
-      assert.strictEqual(wrapper.instance().button, document.activeElement);
+      assert.strictEqual(wrapper.getDOMNode(), document.activeElement);
       assert.strictEqual(wrapper.find('.focusVisible').length, 1);
     });
   });
