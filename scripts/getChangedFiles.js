@@ -33,4 +33,4 @@ const listChangedFiles = () => {
 };
 
 
-listChangedFiles();
+console.log(listChangedFiles());
