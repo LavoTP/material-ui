@@ -32,4 +32,5 @@ const listChangedFiles = () => {
   ]);
 };
 
-module.exports = listChangedFiles;
+
+listChangedFiles();
