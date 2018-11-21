@@ -39,6 +39,7 @@ function Link(props) {
     className: classNameProp,
     component: ComponentProp,
     href,
+    innerRef,
     onClick,
     prefetch,
     router,
@@ -62,6 +63,7 @@ function Link(props) {
     RootProps = {
       ...other,
       className,
+      ref: innerRef,
     };
   } else if (href) {
     ComponentRoot = NextLink;
@@ -77,6 +79,7 @@ function Link(props) {
         })}
         onClick={onClick}
         {...other}
+        ref={innerRef}
       >
         {children}
       </a>
@@ -86,6 +89,7 @@ function Link(props) {
     RootProps = {
       ...other,
       className,
+      ref: innerRef,
     };
   }
 
@@ -112,7 +116,9 @@ Link.propTypes = {
   variant: PropTypes.oneOf(['default', 'primary', 'secondary', 'button', 'inherit']),
 };
 
-export default compose(
+const ComposedLink = compose(
   withRouter,
   withStyles(styles),
 )(Link);
+
+export default React.forwardRef((props, ref) => <ComposedLink {...props} innerRef={ref} />);
