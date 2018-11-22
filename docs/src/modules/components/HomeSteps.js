@@ -129,9 +129,15 @@ function HomeSteps(props) {
         </div>
         <Divider className={classes.divider} />
         <Button
-          component={buttonProps => (
-            <Link variant="button" prefetch href="/getting-started/installation" {...buttonProps} />
-          )}
+          component={React.forwardRef((buttonProps, ref) => (
+            <Link
+              variant="button"
+              prefetch
+              href="/getting-started/installation"
+              ref={ref}
+              {...buttonProps}
+            />
+          ))}
         >
           Read installation docs
         </Button>
