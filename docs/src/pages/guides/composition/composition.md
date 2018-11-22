@@ -73,7 +73,10 @@ Let's change our `ListItemLink` to the following:
 
 ```jsx
 class ListItemLink extends React.Component {
-  renderLink = itemProps => <Link to={this.props.to} {...itemProps} />;
+  renderLink = React.forwardRef((itemProps, ref) => (
+    // with react-router-dom@^5.0.0 use `ref` instead of `innerRef`
+    <RouterLink to={this.props.to} {...itemProps} innerRef={ref} />
+  ));
 
   render() {
     const { icon, primary, secondary, to } = this.props;
@@ -96,3 +99,17 @@ class ListItemLink extends React.Component {
 Here is a demo with [React Router](https://github.com/ReactTraining/react-router):
 
 {{"demo": "pages/guides/composition/ComponentProperty.js"}}
+
+### Caveat with refs
+Some components such as `ButtonBase` (and therefore `Button`) require access to the 
+underlying DOM node. This was previously done with `ReactDOM.findDOMNode(this)`.
+However `findDOMNode` was deprecated (which disqualifies its usage in react's concurrent mode)
+in favour of component refs and ref forwarding. If you pass class components to
+the `component` and don't run in strict mode you won't have to change anything
+since we can safely use `ReactDOM.findDOMNode`. For function components you have
+to wrap your component however in `React.forwardRef`:
+
+```diff
+- <Button component={props => <div {...props} />} />
++ <Button component={React.forwardRef((props, ref) => <div {...props} ref={ref} />)} />
+```
