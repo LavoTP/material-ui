@@ -34,4 +34,40 @@ describe('withTheme', () => {
     );
     assert.strictEqual(wrapper.text(), 'foo');
   });
+
+  describe('refs', () => {
+    it('forwards ref to class components', () => {
+      // eslint-disable-next-line react/prefer-stateless-function
+      class TargetComponent extends React.Component {
+        render() {
+          return null;
+        }
+      }
+      const ThemedTarget = withTheme({})(TargetComponent);
+
+      const ref = React.createRef();
+      mount(
+        <>
+          <ThemedTarget ref={ref} />
+        </>,
+      );
+
+      assert.instanceOf(ref.current, TargetComponent);
+    });
+
+    it('forwards refs to React.forwardRef objects', () => {
+      const ThemedTarget = withTheme()(
+        React.forwardRef((props, ref) => <div {...props} ref={ref} />),
+      );
+
+      const ref = React.createRef();
+      mount(
+        <>
+          <ThemedTarget ref={ref} />
+        </>,
+      );
+
+      assert.strictEqual(ref.current.nodeName, 'DIV');
+    });
+  });
 });
