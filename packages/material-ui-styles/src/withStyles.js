@@ -285,6 +285,10 @@ const withStyles = (stylesOrCreator, options = {}) => Component => {
      * Override or extend the styles applied to the component.
      */
     classes: PropTypes.object,
+    /**
+     * Use that property to pass a ref callback to the decorated component.
+     */
+    innerRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
     stylesOptions: PropTypes.object.isRequired,
     theme: PropTypes.object,
   };
@@ -325,10 +329,6 @@ const withStyles = (stylesOrCreator, options = {}) => Component => {
      * Override or extend the styles applied to the component.
      */
     classes: PropTypes.object,
-    /**
-     * Use that property to pass a ref callback to the decorated component.
-     */
-    innerRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
   };
 
   if (process.env.NODE_ENV !== 'production') {
