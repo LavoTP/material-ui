@@ -300,11 +300,21 @@ const withStyles = (stylesOrCreator, options = {}) => Component => {
         return listenToTheme ? (
           <ThemeContext.Consumer>
             {theme => (
-              <WithStylesInner stylesOptions={stylesOptions} ref={ref} theme={theme} {...props} />
+              <WithStylesInner
+                stylesOptions={stylesOptions}
+                theme={theme}
+                {...props}
+                innerRef={ref}
+              />
             )}
           </ThemeContext.Consumer>
         ) : (
-          <WithStylesInner stylesOptions={stylesOptions} ref={ref} theme={noopTheme} {...props} />
+          <WithStylesInner
+            stylesOptions={stylesOptions}
+            theme={noopTheme}
+            {...props}
+            innerRef={ref}
+          />
         );
       }}
     </StylesContext.Consumer>
