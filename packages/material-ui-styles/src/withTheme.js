@@ -13,13 +13,13 @@ const withTheme = () => Component => {
     </ThemeContext.Consumer>
   ));
 
+  hoistNonReactStatics(WithTheme, Component);
+
   WithTheme.propTypes = {};
 
   if (process.env.NODE_ENV !== 'production') {
     WithTheme.displayName = `WithTheme(${getDisplayName(Component)})`;
   }
-
-  hoistNonReactStatics(WithTheme, Component);
 
   return WithTheme;
 };

@@ -282,15 +282,10 @@ const withStyles = (stylesOrCreator, options = {}) => Component => {
 
   WithStylesInner.propTypes = {
     /**
-     * Override or extend the styles applied to the component.
-     */
-    classes: PropTypes.object,
-    /**
      * Use that property to pass a ref callback to the decorated component.
      */
     innerRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
     stylesOptions: PropTypes.object.isRequired,
-    theme: PropTypes.object,
   };
 
   const WithStyles = React.forwardRef((props, ref) => (
@@ -324,18 +319,20 @@ const withStyles = (stylesOrCreator, options = {}) => Component => {
     </StylesContext.Consumer>
   ));
 
+  // mridgway/hoist-non-react-statics#66
+  hoistNonReactStatics(WithStyles, Component);
+
   WithStyles.propTypes = {
     /**
      * Override or extend the styles applied to the component.
      */
     classes: PropTypes.object,
+    theme: PropTypes.object,
   };
 
   if (process.env.NODE_ENV !== 'production') {
     WithStyles.displayName = `WithStyles(${getDisplayName(Component)})`;
   }
-
-  hoistNonReactStatics(WithStyles, Component);
 
   if (process.env.NODE_ENV !== 'production') {
     // Exposed for test purposes.
