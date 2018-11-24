@@ -43,7 +43,7 @@ describe('withTheme', () => {
           return null;
         }
       }
-      const ThemedTarget = withTheme({})(TargetComponent);
+      const ThemedTarget = withTheme()(TargetComponent);
 
       const ref = React.createRef();
       mount(
