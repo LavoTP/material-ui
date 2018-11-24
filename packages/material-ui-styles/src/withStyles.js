@@ -319,7 +319,7 @@ const withStyles = (stylesOrCreator, options = {}) => Component => {
     </StylesContext.Consumer>
   ));
 
-  // mridgway/hoist-non-react-statics#66
+  // https://github.com/mridgway/hoist-non-react-statics/issues/66
   hoistNonReactStatics(WithStyles, Component);
 
   WithStyles.propTypes = {
