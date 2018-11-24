@@ -33,6 +33,12 @@ const defaultAlias = {
   '@material-ui/lab': './packages/material-ui-lab/src',
   '@material-ui/styles': './packages/material-ui-styles/src',
   '@material-ui/utils': './packages/material-ui-utils/src',
+  /**
+   * required to support forwardRef
+   * the breaking change in hnrs was the dropped support for react 0.13 which we
+   * don't do anyway so we just force our version of hnrs on other packages.
+   */
+  'hoist-non-react-statics': './packages/material-ui/node_modules/hoist-non-react-statics',
 };
 
 module.exports = {
